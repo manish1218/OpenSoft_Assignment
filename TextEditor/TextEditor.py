@@ -11,41 +11,39 @@ class Window(QtGui.QMainWindow):
 
         #defining the actions
         #newFile
-        actionNew=QtGui.QAction('&New File' , self)
+        actionNew=QtGui.QAction(QtGui.QIcon('newfile1.png'),'&New File' , self)
         actionNew.setShortcut('Ctrl+N')
         actionNew.setStatusTip('Create New File')
         actionNew.triggered.connect(self.new_file)
 
         # openFile
-        actionOpen = QtGui.QAction('&Open File', self)
+        actionOpen = QtGui.QAction(QtGui.QIcon('openfile1.png'),'&Open File', self)
         actionOpen.setShortcut('Ctrl+O')
         actionOpen.setStatusTip('Open a File')
         actionOpen.triggered.connect(self.open_file)
 
         # saveFile
-        actionSave = QtGui.QAction('&Save File', self)
+        actionSave = QtGui.QAction(QtGui.QIcon('save1.png'),'&Save File', self)
         actionSave.setShortcut('Ctrl+S')
         actionSave.setStatusTip('Save the File')
         actionSave.triggered.connect(self.save_file)
 
         # exitFile
-        actionExit = QtGui.QAction('&Exit File', self)
+        actionExit = QtGui.QAction(QtGui.QIcon('exit1.png'),'&Exit File', self)
         actionExit.setShortcut('Ctrl+Q')
         actionExit.setStatusTip('Leave File')
         actionExit.triggered.connect(self.exit_file)
 
-        #creating StatusBar
-        self.statusBar()
 
         #creating MenuBar
-        mainMenu=self.menuBar()
+        self.mainMenu=self.addToolBar('Files')
+        self.mainMenu.setToolButtonStyle(3)
 
         #creating The list title and adding actions into it
-        fileMenu=mainMenu.addMenu('&File')
-        fileMenu.addAction(actionNew)
-        fileMenu.addAction(actionOpen)
-        fileMenu.addAction(actionSave)
-        fileMenu.addAction(actionExit)
+        self.mainMenu.addAction(actionNew)
+        self.mainMenu.addAction(actionOpen)
+        self.mainMenu.addAction(actionSave)
+        self.mainMenu.addAction(actionExit)
 
         self.show()
 
@@ -62,27 +60,34 @@ class Window(QtGui.QMainWindow):
         underlineAction = QtGui.QAction(QtGui.QIcon('underline.png'), 'Underline', self)
         underlineAction.triggered.connect(self.underline_text)
 
-        undoAction = QtGui.QAction(QtGui.QIcon('underline.png'), 'Undo', self)
+        undoAction = QtGui.QAction(QtGui.QIcon('undo.png'), 'Undo', self)
         undoAction.triggered.connect(self.undo_text)
 
+        redoAction = QtGui.QAction(QtGui.QIcon('redo.png'), 'Undo', self)
+        redoAction.triggered.connect(self.redo_text)
+
         self.toolBar = self.addToolBar('Edit Text')
+        self.toolBar.setToolButtonStyle(3)
         self.toolBar.addAction(boldAction)
         self.toolBar.addAction(italicAction)
         self.toolBar.addAction(underlineAction)
-
+        self.toolBar.addAction(undoAction)
+        self.toolBar.addAction(redoAction)
         self.show()
 
     def bold_text(self):
-        self.textEdit.setFontUnderline(False)
+        self.textEdit.setFontWeight(True)
 
     def italic_text(self):
-        pass
+        self.textEdit.setFontItalic(True)
 
     def underline_text(self):
         self.textEdit.setFontUnderline(True)
     def undo_text(self):
-        pass
+        self.textEdit.undo()
 
+    def redo_text(self):
+        self.textEdit.redo()
 
     def new_file(self):
         self.textEdit = QtGui.QTextEdit()
